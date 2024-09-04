@@ -1,0 +1,219 @@
+﻿@{ Layout = "~/Views/Shared/_MainLayout.cshtml"; }
+@section Container{
+    <style>
+        .slick-row {
+            line-height: 16px;
+        }
+
+        .loading-indicator label {
+            padding-left: 20px;
+        }
+
+        .green {
+            background-color: #d1e7dd;
+        }
+
+        .red {
+            background-color: #f8d7da;
+        }
+        .blue {
+            cursor: pointer;
+            font-weight: bold;
+            color: red;
+        }
+        .red_1 {
+            font-weight: bold;
+            color: red;
+        }
+        .orange {
+            background-color: #fff3cd;
+        }
+
+        .slick-header-column {
+            align-items: center;
+            background: #e7eded;
+            color: #0c4743;
+            cursor: pointer;
+            justify-content: center;
+            height: 35px;            
+        }
+
+        .loading-indicator {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .text-center_1 {
+            text-align: center;
+        }
+        .error-cell {
+            color: red;
+        }
+        .text-center:hover,
+        .text-center.active {
+            cursor: pointer;
+            font-weight: bold;
+            color: #0f783d;
+        }
+    </style>
+    <script src="~/Scripts/Ocean/order.js"></script>
+    <section class="container">
+        @model EXPRESS_JWTNL.Models.OrderList
+
+        <!-- 모델에 할당된 OrderList 데이터 사용 -->
+        @if (Model != null)
+        {
+            if (Model.OrderDt != null)
+            {
+                <input type="text" id="test" value="@Model.OrderDt" />}
+        }
+        <div class="main_contents">
+            <div class="search_cont order">
+                <div class="top_btn_area">
+                    <div class="btn_type">
+                        <button type="button" class="green" id="ExcelUpload">@*<img src="~/Images/excel.png" />*@UPLOAD</button>
+                    </div>
+                    <div class="btn_type">
+                        <button type="button" class="deep_green" id="btnDelete">@*<img src="~/Images/zipcode.png" />*@DELETE</button>
+                    </div>
+                    <div class="btn_type">
+                        <button type="button" class="deep_green" id="btnSave">@*<img src="~/Images/customs.png" />*@SAVE</button>
+                    </div>
+                    <div class="btn_type">
+                        <button type="button" class="deep_green" id="btnExcel">@*<img src="~/Images/customs.png" />*@Excel</button>
+                    </div>
+                </div>
+                <div class="search_wrap" style="flex-direction:column; align-items:baseline;">
+                    <div class="search_int" style="padding-bottom:10px; gap:20px;">
+                        <div style="display:flex; align-items:center; gap:5px;">
+                            <select id="Search_Type" style="width:100px;">
+                                <option id="MBL_NO" value="MBL_NO">Master B/L</option>
+                                <option id="HBL_NO" value="HBL_NO">House B/L</option>
+                                <option id="LOGISTIC_CD" value="LOGISTIC_CD">Location ID</option>
+                            </select>
+                            <input type="text" id="Search_Value" maxlength="20" />
+                        </div>
+                        <div style="display:flex; align-items:center; gap:5px;">
+                            <span class="multi_text">송장번호</span>
+                            <textarea id="Multi_BL" style="height:30px"></textarea>
+                        </div>
+                        <div class="search_date">
+                            <span>입항일</span>
+                            <div class="date_input" style="height:30px;">
+                                <input type="text" id="StartDate" class="datepicker start_date" />
+                            </div>
+                            <span>~</span>
+                            <div class="date_input" style="height:30px;">
+                                <input type="text" id="EndDate" class="datepicker end_date" />
+                            </div>
+                        </div>
+                        <div>
+                            <button type="button" id="SearchBtn" style="cursor:pointer; width:70px; height:30px; outline:none; border-radius:4px; border:none; background:#70beb8; display:flex; align-items:center; justify-content:center;"><img src="~/Images/icn_search2.png" /></button>
+                        </div>
+                    </div>
+                    <div class="order_info">
+                        <div class="order_col">
+                            <div class="oredr_w">
+                                <div class="order_info__tit">
+                                    <p>수출입 구분</p>
+                                </div>
+                                <div class="order_info__cont">
+                                    <p id="lbl_EXIM"></p>
+                                </div>
+                            </div>
+                            <div class="oredr_w">
+                                <div class="order_info__tit">
+                                    <p>MAWB</p>
+                                </div>
+                                <div class="order_info__cont">
+                                    <p id="lbl_MBL_NO"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="order_col">
+                            <!-- flex-direction : column -->
+                            <div class="oredr_w">
+                                <!-- display : flex -->
+                                <div class="order_info__tit">
+                                    <p>Transport Type</p>
+                                </div>
+                                <div class="order_info__cont">
+                                    <p id="lbl_TSTYPE"></p>
+                                </div>
+                            </div>
+                            <div class="oredr_w">
+                                <div class="order_info__tit">
+                                    <p>Transport No</p>
+                                </div>
+                                <div class="order_info__cont">
+                                    <p id="lbl_TSNO"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="order_col">
+                            <div class="oredr_w">
+                                <div class="order_info__tit">
+                                    <p>ETD</p>
+                                </div>
+                                <div class="order_info__cont">
+                                    <p id="lbl_ETD"></p>
+                                </div>
+                            </div>
+                            <div class="oredr_w">
+                                <div class="order_info__tit">
+                                    <p>출발지</p>
+                                </div>
+                                <div class="order_info__cont">
+                                    <p id="lbl_POL"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="order_col">
+                            <div class="oredr_w">
+                                <div class="order_info__tit">
+                                    <p>ETA</p>
+                                </div>
+                                <div class="order_info__cont">
+                                    <p id="lbl_ETA"></p>
+                                </div>
+                            </div>
+                            <div class="oredr_w">
+                                <div class="order_info__tit">
+                                    <p>도착지</p>
+                                </div>
+                                <div class="order_info__cont">
+                                    <p id="lbl_POD"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="section__second">
+                    <div class="unit">
+                        <span>Total</span> <span>[Count <span id="tot_cnt"></span> ]</span> 
+                    </div>
+                </div>
+                @*<div class="right-btn">
+            <div class="save-btn">
+                <button type="button" class="bg_green" id="saveGrid">SAVE</button>
+            </div>
+        </div>*@
+            </div>
+            <!--<div class="section__second">
+        <div class="unit">
+            <span>Total</span> <span>[Count <span id="tot_cnt"></span> ]</span> <span>[Qty <span id="tot_qty"></span>]</span><span>[Weight <span id="tot_wgt"></span> ]</span><span>[CBM <span id="tot_cbm"></span> ]</span><span>[Amount <span id="tot_amt"></span> ]</span>
+        </div>-->
+            @*<div class="load_excel">
+                <button id="loadExcel" class="pop"><img src="~/Images/excel.png" />Load Excel</button>
+            </div>*@
+            <!--</div>-->
+            <div style="position:relative; padding-top:10px;">
+                <div id="myGrid" class="slick-container" style="width:100%;height:605px;">
+                    <img src="~/Images/loading.svg" />
+                </div>
+                <div id="pager" style="width:100%;height:20px;"></div>
+            </div>
+        </div>
+    </section>
+}

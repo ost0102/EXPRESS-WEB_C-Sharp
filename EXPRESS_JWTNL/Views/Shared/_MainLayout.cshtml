@@ -1,0 +1,1330 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="~/Content/express.css" />
+    <link rel="stylesheet" type="text/css" href="~/Content/fonts/fonts.css" />
+    <link rel="stylesheet" type="text/css" href="~/Content/jquery-ui.min.css" />
+    <link rel="stylesheet" href="/Content/css/slick.columnpicker.css" type="text/css" />
+    <link rel="stylesheet" href="/Content/css/slick.customtooltip.css" type="text/css" />
+    <link rel="stylesheet" href="/Content/css/slick-icons.css" type="text/css" />
+    <link rel="stylesheet" href="/Content/css/slick-alpine-theme.css" type="text/css" />
+    <link rel="stylesheet" href="/Content/css/slick.rowdetailview.css" type="text/css" />
+    @*<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">*@
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+            integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+            crossorigin="anonymous"></script>
+    <script src="~/Scripts/API/jquery-ui.min.js"></script>
+    @*<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs/Sortable.min.js"></script>*@
+    <script src="/Scripts/jquery.jsonp-2.4.min.js"></script>
+    <script src="/Scripts/API/slick.core.js"></script>
+    <script src="/Scripts/API/slick.interactions.js"></script>
+    <script src="/Scripts/API/slick.checkboxselectcolumn.js"></script>
+    <script src="/Scripts/API/slick.grid.js"></script>
+    <script src="/Scripts/API/slick.remotemodel.js"></script>
+    <script src="/Scripts/API/slick.cellrangedecorator.js"></script>
+    <script src="/Scripts/API/slick.cellrangeselector.js"></script>
+    <script src="/Scripts/API/slick.cellselectionmodel.js"></script>
+    <script src="/Scripts/API/slick.rowselectionmodel.js"></script>
+    <script src="/Scripts/API/slick.customtooltip.js"></script>
+    <script src="/Scripts/API/slick.editors.js"></script>
+    <script src="/Scripts/API/slick.dataview.js"></script>
+    <script src="/Scripts/API/slick.formatters.js"></script>
+    <script src="/Scripts/API/slick.pager.js"></script>
+    <script src="/Scripts/API/slick.columnpicker.js"></script>
+    <script src="/Scripts/API/slick.rowdetailview.js"></script>
+    <script src="/Scripts/API/xlsx.full.min.js"></script>
+    <script src="~/Scripts/js/Common.js"></script>
+    <script src="~/Scripts/API/jquery.sumoselect.min.js"></script>
+    <link rel="stylesheet" href="~/Content/sumoselect.min.css"/>
+    <title></title>
+    <script>
+        function _fnLogout() {
+            $.ajax({
+                type: "POST",
+                url: "/Login/LogOut",
+                async: false,
+                success: function (result, status, xhr) {
+
+                    $("#Session_USR_ID ").val("");
+                    $("#Session_LOC_NM ").val("");
+                    $("#Session_EMAIL").val("");
+                    $("#Session_OFFICE_CD").val("");
+                    $("#Session_USR_TYPE").val("");
+
+                    location.href = window.location.origin;
+                }
+            });
+        }
+
+    </script>
+</head>
+<body>
+    <div id="wrap">
+        <div id="header">
+
+            @{
+                if (Session["USR_ID"] == null)
+                {
+                    <input type="hidden" id="Session_USR_ID" value="" />
+                    <input type="hidden" id="Session_LOC_NM" value="" />
+                    <input type="hidden" id="Session_EMAIL" value="" />
+                    <input type="hidden" id="Session_OFFICE_CD" value="" />
+                    <input type="hidden" id="Session_USR_TYPE" value="" />
+                }
+                else
+                {
+                    <input type="hidden" id="Session_USR_ID" value="@Session["USR_ID"]" />
+                    <input type="hidden" id="Session_LOC_NM" value="@Session["LOC_NM"]" />
+                    <input type="hidden" id="Session_EMAIL" value="@Session["EMAIL"]" />
+                    <input type="hidden" id="Session_OFFICE_CD" value="@Session["OFFICE_CD"]" />
+                    <input type="hidden" id="Session_USR_TYPE" value="@Session["LOGIN_TYPE"]" />
+                }
+            }
+
+            <div class="header_cont">
+                <div class="hamburger_box">
+                    <span class="hide_title">JWTNL-EXPRESS</span>
+                    <p class="show_title">JWTNL-EXPRESS</p>
+                    <img src="~/Images/menu.png" />
+                    <div class="slide_menu">
+                        <div class="menu-list">
+                            <p class="menu-list__title on">Cainiao<img src="~/Images/menu_asc.png" class="asc" /><img src="~/Images/menu_desc.png" class="desc" /></p>
+                            <div class="menu-list__sub">
+                                @{
+                                    if (ViewBag.MENU1 == "Order")
+                                    {
+                                        <div class="sub_menu">
+                                            <img src="~/Images/menu_order_on.png" />
+                                            <a href="~/Order/order" class="sub-menu__title on">Order</a>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="sub_menu">
+                                            <img src="~/Images/menu_order_off.png" />
+                                            <a href="~/Order/order" class="sub-menu__title">Order</a>
+                                        </div>
+                                    }
+                                    if (ViewBag.MENU2 == "Exception")
+                                    {
+                                        <div class="sub_menu">
+                                            <img src="~/Images/menu_new_Exception_on.png" />
+                                            <a href="~/Order/exception" class="sub-menu__title on">Exception</a>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="sub_menu">
+                                            <img src="~/Images/menu_new_Exception.png" />
+                                            <a href="~/Order/exception" class="sub-menu__title">Exception</a>
+                                        </div>
+                                    }
+                                    if (ViewBag.MENU5 == "Recall")
+                                    {
+                                        <div class="sub_menu">
+                                            <img src="~/Images/menu_new_Callback_on.png" />
+                                            <a href="~/Order/recall" class="sub-menu__title on">Callback</a>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="sub_menu">
+                                            <img src="~/Images/menu_new_Callback.png" />
+                                            <a href="~/Order/recall" class="sub-menu__title">Callback</a>
+                                        </div>
+                                    }
+                                    if (ViewBag.MENU3 == "Consol")
+                                    {
+                                        <div class="sub_menu">
+                                            <img src="~/Images/menu_new_Consol_on.png" />
+                                            <a href="~/Order/consol" class="sub-menu__title on">Consol</a>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="sub_menu">
+                                            <img src="~/Images/menu_new_Consol.png" />
+                                            <a href="~/Order/consol" class="sub-menu__title">Consol</a>
+                                        </div>
+                                    }
+                                    if (ViewBag.MENU4 == "Rate")
+                                    {
+                                        <div class="sub_menu">
+                                            <img src="~/Images/menu_new_Rate_on.png" />
+                                            <a href="~/Order/rate" class="sub-menu__title on">Rate</a>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="sub_menu">
+                                            <img src="~/Images/menu_new_Rate.png" />
+                                            <a href="~/Order/rate" class="sub-menu__title">Rate</a>
+                                        </div>
+                                    }
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="header_info">
+                    <div class="header_title">
+                        <span class="page_title">Cainiao</span>
+                        <span class="page_sub__title">
+                            @{
+                                if (ViewBag.MENU1 == "Order")
+                                {
+                                    <span>Order</span>
+                                }
+                                else if (ViewBag.MENU2 == "Exception")
+                                {
+                                    <span>Exception</span>
+                                }
+                                else if (ViewBag.MENU3 == "Console")
+                                {
+                                    <span>Console</span>
+                                }
+                                else if (ViewBag.MENU5 == "Recall")
+                                {
+                                    <span>CallBack</span>
+                                }
+                                else if (ViewBag.MENU4 == "Rate")
+                                {
+                                    <span>Rate</span>
+                                }
+                            }
+                        </span>
+                    </div>
+                    <div class="user_info">
+                        <img src="~/Images/logout.png" onclick="_fnLogout()" /><span class="user_name">@Session["LOC_NM"]</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @RenderSection("container", required: false)
+    </div>
+    <!-- alert -->
+    <!-- 기본alert -->
+    <div class="layer_zone" id="alert_confirm">
+        <div class="layer_wrap">
+            <div class="layer_inwrap">
+                <article class="layer_cont" style="max-width:300px;">
+                    <div class="alert_cont">
+                        <div class="inner">
+                            <div class="inner_cont">
+                                <img src="~/Images/icn_alert.png" />
+                                <p>삭제하시겠습니까?</p>
+                            </div>
+                        </div>
+                        <div class="close_btn alert_btn">
+                            <button type="button" class="confirm" id="Delete_Excel">확인</button>
+                            <button type="button" class="cancel" onclick="layerClose('#alert_confirm')">취소</button>
+                        </div>
+                    </div>
+
+                </article>
+            </div>
+        </div>
+    </div>
+
+    <div class="layer_zone" id="CountryCode">
+        <div class="layer_wrap">
+            <div class="layer_inwrap">
+                <article class="layer_cont">
+                    <div class="layer_tit">
+                        <div class="layer_header">
+                            <div class="layer_title">
+                                <h3 class="tit" style="margin-left:0;">통관목록 보류 사유</h3>
+                                @*<span class="pop_sub_title" id="cntr_title">Select Code</span>*@
+                            </div>
+                            <div class="layer_btn">
+                                <div class="layer_close" onclick="layerClose('#CountryCode')">
+                                    <img src="/Images/icn_close.png">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="alert_cont">
+                        <div class="inner" style="padding-bottom:10px;">
+                            <div class="code-input">
+                                <select id="Hold_CD">
+                                    <option value="3004">통관목록보류(부정확한물품정보)</option>
+                                    <option value="3012">통관목록보류(세관 미승인)</option>
+                                </select>
+                                <select id="Hold_Detail">
+                                    <option value="0000">세부사항</option>
+                                    <option value="4001">통관목록보류(세관압수)</option>
+                                    <option value="4004">화주의 정보 미제공</option>
+                                    <option value="4008">지식재산권 침해</option>
+                                </select>
+                                <input type="hidden" id="Waybill">
+                                <input type="hidden" id="Mngt_id">
+                                <input type="hidden" id="Cop_no">
+                                <input type="hidden" id="Clear_mode">
+                                <button type="button" id="btnCntr">저장</button>
+                            </div>
+                            <div class="country-result">
+                                <h3 class="excep_warining">※ 40xx 코드 저장시 오류건으로 수집 마감됩니다.</h3>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </div>
+
+    <div class="layer_zone" id="SingleExcept">
+        <div class="layer_wrap">
+            <div class="layer_inwrap">
+                <article class="layer_cont">
+                    <div class="layer_tit">
+                        <div class="layer_header">
+                            <div class="layer_title">
+                                <h3 class="tit" id="sendPopText" style="margin-left:0;">통관목록 보류 사유</h3>
+                                @*<span class="pop_sub_title" id="cntr_title">Select Code</span>*@
+                            </div>
+                            <div class="layer_btn">
+                                <div class="layer_close" onclick="layerClose('#SingleExcept')">
+                                    <img src="/Images/icn_close.png">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="alert_cont">
+                        <div class="inner" style="padding-bottom:10px;">
+                            <div class="code-input">
+                                <select id="S_Hold_CD">
+                                    <option value="3004">통관목록보류(부정확한물품정보)</option>
+                                    <option value="3012">통관목록보류(세관 미승인)</option>
+                                </select>
+                                <input type="hidden" id="s_Waybill">
+                                <input type="hidden" id="s_Mngt_id">
+                                <input type="hidden" id="s_Cop_no">
+                                <input type="hidden" id="s_Clear_mode">
+                                <button type="button" id="s_btnCntr">저장</button>
+                            </div>
+                            <div class="country-result">
+                                <h3 class="excep_warining">※ 40xx 코드 저장시 오류건으로 수집 마감됩니다.</h3>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </div>
+
+    <div class="layer_zone" id="alert01" style="z-index:10001">
+        <div class="layer_wrap">
+            <div class="layer_inwrap">
+                <article class="layer_cont" style="max-width:300px;">
+                    <div class="alert_cont">
+                        <div class="inner">
+                            <div class="inner_cont">
+                                <img src="~/Images/icn_alert.png" />
+                                <p>개인통관부호 검증 중 입니다.</p>
+                            </div>
+                        </div>
+                        <div class="close_btn alert_btn">
+                            <button type="button" class="confirm2 close">확인</button>
+                        </div>
+                    </div>
+
+                </article>
+            </div>
+        </div>
+    </div>
+    <!-- 기본alert -->
+    <!-- 에러 alert -->
+    <div class="layer_zone">
+        <div class="layer_wrap">
+            <div class="layer_inwrap">
+                <article class="layer_cont">
+                    <div class="layer_tit">
+                        <h3 class="tit">ERROR</h3>
+                    </div>
+                    <div class="alert_cont">
+                        <div class="inner">
+                            <p>1열 오류</p>
+                            <p>2열 오류</p>
+                            <p>3열 오류</p>
+                        </div>
+                        <div class="close_btn">
+                            <button type="button" class="close">확인</button>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </div>
+    <!-- 에러 alert -->
+    <!-- 프로그레스 alert -->
+    <div class="layer_zone" id="ProgressPop" style="display:none;">
+        <div class="layer_wrap">
+            <div class="layer_inwrap">
+                <article class="layer_cont">
+                    <div class="layer_tit">
+                        <h3 class="tit">Progress</h3>
+                    </div>
+                    <div class="alert_cont">
+                        <div class="inner">
+                            <div class="progress_area">
+                                <p class="progress_title">진행률<span class="progress_per" id="Progress_percent"></span>%</p>
+                                <div class="dash-progress">
+                                    <div class="dash-progress__bar per0"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="progress_step__cont">
+                            <div class="progresss_step" id="Progress_Type">
+                                <div class="pro_stat yet" id="Addr_Div">
+                                    <div class="pro_stat_img">
+                                        <img id="Addr_Confirm" src="~/Images/pro_yet.png" />
+                                    </div>
+                                    <div class="pro_stat-text">
+                                        <p class="Addr" id="Addr_confirm_txt">우편번호 검증 중</p>
+                                    </div>
+                                </div>
+                                @*<div class="pro_stat yet" id="Person_Div">
+                                        <div class="pro_stat_img">
+                                            <img id="Person_Confirm" src="~/Images/pro_yet.png" />
+                                        </div>
+                                        <div class="pro_stat-text">
+                                            <p class="Person" id="Person_confirm">개인통관부호 검증 중</p>
+                                        </div>
+                                    </div>
+                                    <div class="pro_stat yet" id="Test_Div">
+                                        <div class="pro_stat_img">
+                                            <img id="Test_Confirm" src="~/Images/pro_yet.png" />
+                                        </div>
+                                        <div class="pro_stat-text">
+                                            <p class="Test" id="Test_confirm">통관 분류 항목 검증 중</p>
+                                        </div>
+                                    </div>
+                                    <div class="pro_stat yet" id="Eng_Div">
+                                            <div class="pro_stat_img">
+                                                <img id="Eng_Confirm" src="~/Images/pro_yet.png" />
+                                            </div>
+                                            <div class="pro_stat-text">
+                                                <p>영문 변화 중</p>
+                                            </div>
+                                        </div>*@
+                            </div>
+                        </div>
+                        <div class="close_btn">
+                            <button type="button" class="close off" id="progress_Close">확인</button>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </div>
+    <!-- 프로그레스 alert -->
+    <!-- 엑셀업로드 alert -->
+    <div class="layer_zone" id="_Upload">
+        <div class="layer_wrap">
+            <div class="layer_inwrap">
+                <article class="layer_cont">
+                    <div class="layer_tit">
+                        <h3 class="tit">EXCEL UPLOAD</h3>
+                        <button type="button" class="close" id="AlertClose"></button>
+                    </div>
+                    <div class="alert_cont">
+                        <div class="inner">
+                            <div class="file_cus">
+                                <label>
+                                    <span>Excel Upload</span>
+                                    <input type="file" id="fileInput" accept=".xlsx, .xls">
+                                    <span class="file_name" id="file_Nm">파일을 선택해주세요.</span>
+                                    <span class="file_btn">파일선택</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="save_btn">
+                            <button type="button" id="btnUpload"><img src="~/Images/upload.png" />Upload</button>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </div>
+    <div class="loading" id="ProgressBar_Loading" style="display:none">
+        <div class="ispinner ispinner-large">
+            <div class="ispinner-blade"></div>
+            <div class="ispinner-blade"></div>
+            <div class="ispinner-blade"></div>
+            <div class="ispinner-blade"></div>
+            <div class="ispinner-blade"></div>
+            <div class="ispinner-blade"></div>
+            <div class="ispinner-blade"></div>
+            <div class="ispinner-blade"></div>
+            <div class="ispinner-blade"></div>
+            <div class="ispinner-blade"></div>
+            <div class="ispinner-blade"></div>
+            <div class="ispinner-blade"></div>
+        </div>
+    </div>
+
+    <!-- 엑셀업로드 alert -->
+    <!-- Order Mangement alert -->
+    <div class="layer_zone" id="OrderMangement" style="display:none;">
+        <div class="layer_wrap">
+            <div class="layer_inwrap">
+                <article class="layer_cont">
+                    <div class="layer_tit">
+                        <div class="layer_header">
+                            <div class="layer_title">
+                                <h3 class="tit">EDIT</h3>
+                                <span class="pop_sub_title">Order Mangement</span>
+                            </div>
+                            <div class="layer_btn">
+                                <div class="layer_button">
+                                    <button type="button">SEARCH</button>
+                                </div>
+                                <div class="layer_button">
+                                    <button type="button">SAVE</button>
+                                </div>
+                                <div class="layer_button">
+                                    <button type="button">DELETE</button>
+                                </div>
+                                <div class="layer_close" onclick="layerClose('#OrderMangement')">
+                                    <img src="~/Images/icn_close.png" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="alert_cont">
+                        <div class="inner">
+                            <div class="order_cont">
+                                <div class="order_cont_w">
+                                    <div class="order_cont_tit">
+                                        <span>하우스 관리</span>
+                                    </div>
+                                    <div class="order_cont_contr">
+                                        <div class="contr_list">
+                                            <div class="order_contr">
+                                                <p class="contr_tit">오더일자</p>
+                                                <div class="contr_int date_input">
+                                                    <input type="text" id="OrderDate" class="datepicker order_date" />
+                                                </div>
+                                            </div>
+                                            <div class="order_contr">
+                                                <p class="contr_tit">오더번호</p>
+                                                <div class="contr_int">
+                                                    <input type="text" />
+                                                </div>
+                                            </div>
+                                            <div class="order_contr" style="display:none;">
+                                                <p class="contr_tit">BAG 번호</p>
+                                                <div class="contr_int">
+                                                    <input type="text" />
+                                                </div>
+                                            </div>
+                                            <div class="order_contr">
+                                                <p class="contr_tit">House B/L No</p>
+                                                <div class="contr_int">
+                                                    <input type="text" />
+                                                </div>
+                                            </div>
+                                            <div class="order_contr">
+                                                <p class="contr_tit">M.B/L 번호</p>
+                                                <div class="contr_int">
+                                                    <input type="text" />
+                                                </div>
+                                            </div>
+                                            <div class="order_contr">
+                                                <p class="contr_tit">진행단계</p>
+                                                <div class="contr_int">
+                                                    <input type="text" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="order_cont_contr">
+                                        <div class="contr_list">
+                                            <div class="order_contr">
+                                                <p class="contr_tit">통관구분</p>
+                                                <div class="contr_int">
+                                                    <select>
+                                                        <option>[N] 일반통관</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="order_contr">
+                                                <p class="contr_tit">용도구분</p>
+                                                <div class="contr_int">
+                                                    <select>
+                                                        <option>[1] 개인</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="order_contr">
+                                                <p class="contr_tit">거래구분</p>
+                                                <div class="contr_int">
+                                                    <select>
+                                                        <option>[A] 전자상거래</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="order_contr">
+                                                <p class="contr_tit">검사구분</p>
+                                                <div class="contr_int">
+                                                    <select>
+                                                        <option>YES</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="order_contr">
+                                                <p class="contr_tit">선별</p>
+                                                <div class="contr_int">
+                                                    <select>
+                                                        <option>NO</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="order_contr">
+                                                <p class="contr_tit">취하</p>
+                                                <div class="contr_int">
+                                                    <select>
+                                                        <option>YES</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="order_contr">
+                                                <p class="contr_tit">일검</p>
+                                                <div class="contr_int">
+                                                    <select>
+                                                        <option>YES</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="order_cont_contr">
+                                        <div class="contr_list">
+                                            <div class="order_contr-top">
+                                                <div class="order_contr">
+                                                    <p class="contr_tit">출항일자</p>
+                                                    <div class="contr_int date_input">
+                                                        <input type="text" id="POLDate" class="datepicker pol_date" />
+                                                    </div>
+                                                </div>
+                                                <div class="order_contr">
+                                                    <p class="contr_tit">입항일자</p>
+                                                    <div class="contr_int date_input">
+                                                        <input type="text" id="PODDate" class="datepicker pod_date" />
+                                                    </div>
+                                                </div>
+                                                <div class="order_contr">
+                                                    <p class="contr_tit">송장금액</p>
+                                                    <div class="contr_int-flex">
+                                                        <div class="contr_unit">
+                                                            <input type="text" />
+                                                        </div>
+                                                        <div class="contr_int">
+                                                            <input type="text" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="order_contr">
+                                                    <p class="contr_tit">HS Code</p>
+                                                    <div class="contr_int contr-search">
+                                                        <input type="text" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="order_contr-bottom">
+                                                <div class="order_contr">
+                                                    <p class="contr_tit">수량</p>
+                                                    <div class="contr_int">
+                                                        <input type="text" />
+                                                    </div>
+                                                </div>
+                                                <div class="order_contr">
+                                                    <p class="contr_tit">중량</p>
+                                                    <div class="contr_int">
+                                                        <input type="text" />
+                                                    </div>
+                                                </div>
+                                                <div class="order_contr">
+                                                    <p class="contr_tit">용적</p>
+                                                    <div class="contr_int">
+                                                        <input type="text" />
+                                                    </div>
+                                                </div>
+                                                <div class="order_contr">
+                                                    <p class="contr_tit">Volume</p>
+                                                    <div class="contr_int">
+                                                        <input type="text" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="order_cont_w">
+                                    <div class="order_cont_w-flex">
+                                        <div class="order_cont_tit">
+                                            <span>송하인 정보</span>
+                                        </div>
+                                        <div class="order_cont_contr">
+                                            <div class="contr_list">
+                                                <div class="order_contr">
+                                                    <p class="contr_tit">상호</p>
+                                                    <div class="contr_int">
+                                                        <input type="text" />
+                                                    </div>
+                                                </div>
+                                                <div class="order_contr">
+                                                    <p class="contr_tit">주소</p>
+                                                    <div class="contr_int address">
+                                                        <textarea></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="order_contr">
+                                                    <p class="contr_tit">상호(한)</p>
+                                                    <div class="contr_int">
+                                                        <input type="text" />
+                                                    </div>
+                                                </div>
+                                                <div class="order_contr">
+                                                    <p class="contr_tit">주소(한)</p>
+                                                    <div class="contr_int address">
+                                                        <textarea></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="order_contr">
+                                                    <div class="order_contr-flex">
+                                                        <p class="contr_tit">사업자번호</p>
+                                                        <div class="contr_int">
+                                                            <input type="text" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="order_contr-flex">
+                                                        <p class="contr_tit">전화번호</p>
+                                                        <div class="contr_int">
+                                                            <input type="text" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="order_contr">
+                                                    <div class="order_contr-flex">
+                                                        <p class="contr_tit">우편번호</p>
+                                                        <div class="contr_int">
+                                                            <input type="text" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="order_contr-flex">
+                                                        <p class="contr_tit">국가명</p>
+                                                        <div class="contr_int contr-search">
+                                                            <input type="text" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="order_cont_w-flex">
+                                        <div class="order_cont_tit">
+                                            <span>수하인 정보</span>
+                                        </div>
+                                        <div class="order_cont_contr">
+                                            <div class="contr_list">
+                                                <div class="order_contr">
+                                                    <p class="contr_tit">상호</p>
+                                                    <div class="contr_int">
+                                                        <input type="text" />
+                                                    </div>
+                                                </div>
+                                                <div class="order_contr">
+                                                    <p class="contr_tit">주소</p>
+                                                    <div class="contr_int address">
+                                                        <textarea></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="order_contr">
+                                                    <p class="contr_tit">상호(한)</p>
+                                                    <div class="contr_int">
+                                                        <input type="text" />
+                                                    </div>
+                                                </div>
+                                                <div class="order_contr">
+                                                    <p class="contr_tit">주소(한)</p>
+                                                    <div class="contr_int address">
+                                                        <textarea></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="order_contr">
+                                                    <div class="order_contr-flex">
+                                                        <p class="contr_tit">사업자번호</p>
+                                                        <div class="contr_int">
+                                                            <input type="text" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="order_contr-flex">
+                                                        <p class="contr_tit">전화번호</p>
+                                                        <div class="contr_int">
+                                                            <input type="text" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="order_contr">
+                                                    <div class="order_contr-flex">
+                                                        <p class="contr_tit">우편번호</p>
+                                                        <div class="contr_int">
+                                                            <input type="text" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="order_contr-flex">
+                                                        <p class="contr_tit">국가명</p>
+                                                        <div class="contr_int contr-search">
+                                                            <input type="text" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="order_cont_w-flex">
+                                        <div class="order_cont_tit">
+                                            <span>수하인 배송 정보</span>
+                                        </div>
+                                        <div class="order_cont_contr">
+                                            <div class="contr_list">
+                                                <div class="order_contr">
+                                                    <div class="order_contr-flex">
+                                                        <p class="contr_tit">배송일자</p>
+                                                        <div class="contr_int date_input">
+                                                            <input type="text" id="ShippingDate" class="datepicker shipping_date" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="order_contr-flex">
+                                                        <p class="contr_tit">수입신고일</p>
+                                                        <div class="contr_int date_input">
+                                                            <input type="text" id="ImportDate" class="datepicker import_date" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="order_contr">
+                                                    <p class="contr_tit">배송업체</p>
+                                                    <div class="contr_int contr-search">
+                                                        <input type="text" />
+                                                    </div>
+                                                </div>
+                                                <div class="order_contr">
+                                                    <p class="contr_tit">배송주소</p>
+                                                    <div class="contr_int address">
+                                                        <textarea></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="order_contr">
+                                                    <p class="contr_tit">사유</p>
+                                                    <div class="contr_int">
+                                                        <textarea></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="order_cont_w">
+                                    <div class="order_cont_tit">
+                                        <span>전자상거래 유형 정보</span>
+                                    </div>
+                                    <div class="order_cont_contr">
+                                        <div class="contr_list">
+                                            <div class="order_contr">
+                                                <div class="order_contr-flex">
+                                                    <p class="contr_tit">품명</p>
+                                                    <div class="contr_int">
+                                                        <input type="text" />
+                                                    </div>
+                                                </div>
+                                                <div class="order_contr-flex">
+                                                    <p class="contr_tit">전자상거래 유형</p>
+                                                    <div class="contr_int">
+                                                        <select>
+                                                            <option>-</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="order_contr-flex">
+                                                    <p class="contr_tit">전자상거래 주소</p>
+                                                    <div class="contr_int">
+                                                        <input type="text" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="order_contr">
+                                                <div class="order_contr-flex">
+                                                    <p class="contr_tit">해외판매자 부호</p>
+                                                    <div class="contr_int">
+                                                        <input type="text" />
+                                                    </div>
+                                                </div>
+                                                <div class="order_contr-flex">
+                                                    <p class="contr_tit">판매중계자 부호</p>
+                                                    <div class="contr_int">
+                                                        <input type="text" />
+                                                    </div>
+                                                </div>
+                                                <div class="order_contr-flex">
+                                                    <p class="contr_tit">구매대행업체 부호</p>
+                                                    <div class="contr_int">
+                                                        <input type="text" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="order_contr">
+                                                <div class="order_contr-flex">
+                                                    <p class="contr_tit">해외판매자 상호</p>
+                                                    <div class="contr_int">
+                                                        <input type="text" />
+                                                    </div>
+                                                </div>
+                                                <div class="order_contr-flex">
+                                                    <p class="contr_tit">판매중계자 상호</p>
+                                                    <div class="contr_int">
+                                                        <input type="text" />
+                                                    </div>
+                                                </div>
+                                                <div class="order_contr-flex">
+                                                    <p class="contr_tit">구매대행업체 상호</p>
+                                                    <div class="contr_int">
+                                                        <input type="text" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="order_contr">
+                                                <p class="contr_tit">비고</p>
+                                                <div class="contr_int">
+                                                    <input type="text" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                @*<div class="order_cont_w">
+                                        <div class="order_cont_w-flex">
+                                            <div class="order_cont_tit">
+                                                <span>세부품목정보</span>
+                                            </div>
+                                            <div class="order_cont_contr">
+                                                <div class="contr_list">
+                                                    <div class="detail_table">
+                                                        <div class="tb_detail-th">
+                                                            <table>
+                                                                <colgroup>
+                                                                    <col width="39px" />
+                                                                    <col width="171px" />
+                                                                    <col width="87px" />
+                                                                    <col width="62px" />
+                                                                    <col width="87px" />
+                                                                </colgroup>
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th class="contr_tit">No</th>
+                                                                        <th class="contr_tit">품명</th>
+                                                                        <th class="contr_tit">금액</th>
+                                                                        <th class="contr_tit">수량</th>
+                                                                        <th class="contr_tit">수량단위</th>
+                                                                    </tr>
+                                                                </thead>
+                                                            </table>
+                                                        </div>
+                                                        <div class="tb_detail-td">
+                                                            <table>
+                                                                <colgroup>
+                                                                    <col width="39px" />
+                                                                    <col width="171px" />
+                                                                    <col width="87px" />
+                                                                    <col width="62px" />
+                                                                    <col width="87px" />
+                                                                </colgroup>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td>1</td>
+                                                                        <td>UNOPENED USED BABABABABABABABA</td>
+                                                                        <td>385.580</td>
+                                                                        <td>26</td>
+                                                                        <td>26</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>2</td>
+                                                                        <td>UNOPENED USED BABABABABABABABA</td>
+                                                                        <td>385.580</td>
+                                                                        <td>26</td>
+                                                                        <td>26</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>3</td>
+                                                                        <td>UNOPENED USED BABABABABABABABA</td>
+                                                                        <td>385.580</td>
+                                                                        <td>26</td>
+                                                                        <td>26</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>4</td>
+                                                                        <td>UNOPENED USED BABABABABABABABA</td>
+                                                                        <td>385.580</td>
+                                                                        <td>26</td>
+                                                                        <td>26</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="order_cont_w-flex">
+                                            <div class="order_cont_tit">
+                                                <span>컨테이너 정보</span>
+                                            </div>
+                                            <div class="order_cont_contr">
+                                                <div class="contr_list">
+                                                    <div class="detail_table">
+                                                        <div class="tb_detail-th">
+                                                            <table>
+                                                                <colgroup>
+                                                                    <col width="39px" />
+                                                                    <col width="171px" />
+                                                                    <col width="87px" />
+                                                                    <col width="62px" />
+                                                                    <col width="87px" />
+                                                                </colgroup>
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th class="contr_tit">No</th>
+                                                                        <th class="contr_tit">컨테이너번호</th>
+                                                                        <th class="contr_tit">종류</th>
+                                                                        <th class="contr_tit">봉인번호1</th>
+                                                                        <th class="contr_tit">봉인번호2</th>
+                                                                        <th class="contr_tit">봉인번호3</th>
+                                                                        <th class="contr_tit">수량</th>
+                                                                        <th class="contr_tit">단위</th>
+                                                                        <th class="contr_tit">중량</th>
+                                                                    </tr>
+                                                                </thead>
+                                                            </table>
+                                                        </div>
+                                                        <div class="tb_detail-td">
+                                                            <table>
+                                                                <colgroup>
+                                                                    <col width="39px" />
+                                                                    <col width="171px" />
+                                                                    <col width="87px" />
+                                                                    <col width="62px" />
+                                                                    <col width="87px" />
+                                                                </colgroup>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td>1</td>
+                                                                        <td>UNOPENED USED BABABABABABABABA</td>
+                                                                        <td>385.580</td>
+                                                                        <td>26</td>
+                                                                        <td>26</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>2</td>
+                                                                        <td>UNOPENED USED BABABABABABABABA</td>
+                                                                        <td>385.580</td>
+                                                                        <td>26</td>
+                                                                        <td>26</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>3</td>
+                                                                        <td>UNOPENED USED BABABABABABABABA</td>
+                                                                        <td>385.580</td>
+                                                                        <td>26</td>
+                                                                        <td>26</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>4</td>
+                                                                        <td>UNOPENED USED BABABABABABABABA</td>
+                                                                        <td>385.580</td>
+                                                                        <td>26</td>
+                                                                        <td>26</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>*@
+                            </div>
+                        </div>
+                        <div class="close_btn">
+                            <button type="button" class="close" onclick="layerClose('#OrderMangement')">확인</button>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </div>
+    <!-- Order Mangement alert -->
+    <div class="layer_zone" id="Tracking">
+        <div class="layer_wrap">
+            <div class="layer_inwrap">
+                <article class="layer_cont">
+                    <div class="layer_tit">
+                        <div class="layer_header">
+                            <div class="layer_title">
+                                <h3 class="tit">SEARCH</h3>
+                                <span class="pop_sub_title">Tracking Information</span>
+                            </div>
+                            <div class="layer_btn">
+                                <div class="layer_close" onclick="layerClose('#Tracking')">
+                                    <img src="~/Images/icn_close.png" style=" cursor: pointer" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="alert_cont">
+                        <div class="inner">
+                            <div class="tracking-list">
+                                <div class="tracking-list__tit">
+                                    <span>기본정보</span>
+                                </div>
+                                <div class="tracking-list__info">
+                                    <div class="info-list">
+                                        <div class="info-list__cont left">
+                                            <div class="info-list_cont2">
+                                                <div class="info-list__tit">
+                                                    <p>H.B/L 번호</p>
+                                                </div>
+                                                <div class="info-list__info">
+                                                    <p id="H_NO">587839584826</p>
+                                                    <input type="hidden" id="PTN_CD">
+                                                </div>
+                                            </div>
+                                            <div class="info-list_cont2">
+                                                <div class="info-list__tit">
+                                                    <p>LOGISTICS CODE</p>
+                                                </div>
+                                                <div class="info-list__info">
+                                                    <p id="L_CD">587839584826</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="info-list__cont right">
+                                            <div class="info-list_cont2">
+                                                <div class="info-list__tit">
+                                                    <p>화물진행상태</p>
+                                                </div>
+                                                <div class="info-list__info">
+                                                    <p id="UNI_STATUS">입항</p>
+                                                </div>
+                                            </div>
+                                            <div class="info-list_cont2">
+                                                <div class="info-list__tit">
+                                                    <p>화물진행일시</p>
+                                                </div>
+                                                <div class="info-list__info">
+                                                    <p id="UNI_TIME">2024-03-28 00:00</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tracking-list__info">
+                                    <div class="info-list">
+                                        <div class="info-list__cont left">
+                                            <div class="info-list_cont2">
+                                                <div class="info-list__tit">
+                                                    <p>M.B/L 번호</p>
+                                                </div>
+                                                <div class="info-list__info">
+                                                    <p id="M_NO">HSLI024322000307</p>
+                                                </div>
+                                            </div>
+                                            <div class="info-list_cont2">
+                                                <div class="info-list__tit">
+                                                    <p>TRANSPORT NO</p>
+                                                </div>
+                                                <div class="info-list__info">
+                                                    <p id="T_NO">HANSUNG INCHEON</p>
+                                                </div>
+                                            </div>
+                                            <div class="info-list_cont2">
+                                                <div class="info-list__tit">
+                                                    <p>ETD</p>
+                                                </div>
+                                                <div class="info-list__info">
+                                                    <p id="TRK_ETD">2024-03-27</p>
+                                                </div>
+                                            </div>
+                                            <div class="info-list_cont2">
+                                                <div class="info-list__tit">
+                                                    <p>ETA</p>
+                                                </div>
+                                                <div class="info-list__info">
+                                                    <p id="TRK_ETA">2024-03-28</p>
+                                                </div>
+                                            </div>
+                                            @*<div class="info-list_cont2">
+                                                    <div class="info-list__tit">
+                                                        <p>수량</p>
+                                                    </div>
+                                                    <div class="info-list__info">
+                                                        <p>1</p>
+                                                    </div>
+                                                </div>*@
+                                        </div>
+                                        <div class="info-list__cont right">
+                                            <div class="info-list_cont2">
+                                                <div class="info-list__tit">
+                                                    <p>송하인명</p>
+                                                </div>
+                                                <div class="info-list__info">
+                                                    <p id="SEND_NM">SHANDONG ZHOGHT FORWARDING CO.,LTD</p>
+                                                </div>
+                                            </div>
+                                            <div class="info-list_cont2">
+                                                <div class="info-list__tit">
+                                                    <p>수하인명</p>
+                                                </div>
+                                                <div class="info-list__info">
+                                                    <p id="RECIVER_NM">GIMBOMI</p>
+                                                </div>
+                                            </div>
+                                            <div class="info-list_cont2">
+                                                <div class="info-list__tit">
+                                                    <p>출발지</p>
+                                                </div>
+                                                <div class="info-list__info">
+                                                    <p id="START_LOC">CNWEI</p>
+                                                </div>
+                                            </div>
+                                            <div class="info-list_cont2">
+                                                <div class="info-list__tit">
+                                                    <p>도착지</p>
+                                                </div>
+                                                <div class="info-list__info">
+                                                    <p id="END_LOC">KRINC</p>
+                                                </div>
+                                            </div>
+                                            @*<div class="info-list_cont2">
+                                                    <div class="info-list__tit">
+                                                        <p>중량</p>
+                                                    </div>
+                                                    <div class="info-list__info">
+                                                        <p>8.6</p>
+                                                    </div>
+                                                </div>*@
+                                        </div>
+                                    </div>
+                                </div>
+                                @*<div class="tracking-list__info">
+                                        <div class="info-list">
+                                            <div class="info-list__cont left">
+                                                <div class="info-list_cont2">
+                                                    <div class="info-list__tit">
+                                                        <p>배송사</p>
+                                                    </div>
+                                                    <div class="info-list__info">
+                                                        <p></p>
+                                                    </div>
+                                                </div>
+                                                <div class="info-list_cont2">
+                                                    <div class="info-list__tit">
+                                                        <p>홀드</p>
+                                                    </div>
+                                                    <div class="info-list__info">
+                                                        <p></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="info-list__cont right">
+                                                <div class="info-list_cont2">
+                                                    <div class="info-list__tit">
+                                                        <p>변경배송사/번호</p>
+                                                    </div>
+                                                    <div class="info-list__info">
+                                                        <p></p>
+                                                    </div>
+                                                </div>
+                                                <div class="info-list_cont2">
+                                                    <div class="info-list__tit">
+                                                        <p>비고</p>
+                                                    </div>
+                                                    <div class="info-list__info">
+                                                        <p></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>*@
+                            </div>
+                            <div class="tracking-current">
+                                <div class="tracking-current__tit">
+                                    <span>진행현황</span>
+                                </div>
+                                @*<div class="tracking-current__info">
+                                        <div></div>
+                                        <div></div>
+                                    </div>*@
+                                <div style="position:relative; padding-top:10px;">
+                                    <div id="myGrid_PoPUp" class="slick-container" style="width:100%;height:300px;">
+                                        <img id="progress_bar" src="~/Images/loading.svg" />
+                                    </div>
+                                    <div id="pager" style="width:100%;height:20px;"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="close_btn">
+                            <button type="button" class="close" onclick="layerClose('#Tracking')">확인</button>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </div>
+    <!-- alert -->
+</body>
+</html>

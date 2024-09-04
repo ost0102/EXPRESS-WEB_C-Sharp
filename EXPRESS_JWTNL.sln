@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32901.82
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EXPRESS_JWTNL", "EXPRESS_JWTNL\EXPRESS_JWTNL.csproj", "{CC5A01BE-870C-47FA-8B9C-F187A2233FCF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CC5A01BE-870C-47FA-8B9C-F187A2233FCF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC5A01BE-870C-47FA-8B9C-F187A2233FCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC5A01BE-870C-47FA-8B9C-F187A2233FCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC5A01BE-870C-47FA-8B9C-F187A2233FCF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9E7B74B0-3D90-4D8A-9DDB-844F9F7A598A}
+	EndGlobalSection
+EndGlobal

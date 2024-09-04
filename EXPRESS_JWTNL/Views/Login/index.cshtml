@@ -1,0 +1,270 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" type="text/css" href="~/Content/express.css" />
+    <link rel="stylesheet" type="text/css" href="~/Content/fonts/fonts.css" />
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+            integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+            crossorigin="anonymous"></script>
+    <script src="~/Scripts/Login/Login.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <title></title>
+    <script>
+        ////로그인 아이디 저장 체크가 되어있을 시 데이터 넣는 로직
+        //var userInputId = _fnGetCookie("Prime_CK_USR_ID_REMEMBER_JWTNL");
+        //if (_fnToNull(userInputId) != "") {
+        //    $("#USR_ID").val(userInputId);
+        //    /*$("#login_keep").replaceWith("<input type='checkbox' id='company_login_keep' name='login_keep' checked>");*/
+        //    $("#login_keep").attr("checked", true);
+        //}
+
+        //$("#USR_ID").focus();
+
+        function _fnToNull(data) {
+            // undifined나 null을 null string으로 변환하는 함수. 
+            if (String(data) == 'undefined' || String(data) == 'null') {
+                return ''
+            } else {
+                return data
+            }
+        }
+
+        //이름 / 값 / 저장 시킬 시간
+        function _fnSetCookie(name, value, hours) {
+            if (hours) {
+                var date = new Date();
+                date.setTime(date.getTime() + (hours * 60 * 60 * 1000));
+                var expires = "; expires=" + date.toGMTString();
+            } else {
+                var expires = "";
+            }
+            document.cookie = name + "=" + value + expires + "; path=/";
+        }
+        //쿠키 값 가져오기
+        function _fnGetCookie(cookie_name) {
+            var x, y;
+            var val = document.cookie.split(';');
+
+            for (var i = 0; i < val.length; i++) {
+                x = val[i].substr(0, val[i].indexOf('='));
+                y = val[i].substr(val[i].indexOf('=') + 1);
+                x = x.replace(/^\s+|\s+$/g, ''); // 앞과 뒤의 공백 제거하기
+                if (x == cookie_name) {
+                    return unescape(y); // unescape로 디코딩 후 값 리턴
+                }
+            }
+        }
+        //쿠키 삭제
+        function _fnDelCookie(cookie_name) {
+            _fnSetCookie(cookie_name, "", "-1");
+        }
+        function _fnAlertMsg(msg) {
+            $(".alert_cont .inner p").text("");
+            $(".alert_cont .inner p").text(msg);
+            layerPopup('#alert01');
+        }
+        function _fnMakeJson(data) {
+            if (data != undefined) {
+                var str = JSON.stringify(data);
+                if (str.indexOf("[") == -1) {
+                    str = "[" + str + "]";
+                }
+                return str;
+            }
+        }
+        /* 레이어팝업 */
+        var layerPopup = function (obj) {
+            var $laybtn = $(obj),
+                $glayer_zone = $(".layer_zone");
+            if ($glayer_zone.length === 0) { return; }
+            //$glayer_zone.hide()
+            $("body").addClass("layer_on");
+            $laybtn.fadeIn(200);
+
+            $glayer_zone.on("click", ".close:not(.off)", function (e) {
+                var $this = $(this),
+                    $t_layer = $this.parents(".layer_zone");
+                $("body").removeClass("layer_on");
+                $t_layer.fadeOut(300);
+            });
+        };
+
+        /* 레이어팝업 닫기 */
+        var layerClose = function (obj) {
+            var $laybtn = $(obj);
+            $("body").removeClass("layer_on");
+            $laybtn.hide();
+        };
+    </script>
+</head>
+<body style="overflow:hidden;">
+    <div class="content">
+        <div class="login_visual">
+            <div class="login-title">
+                <p class="title-top">EXPRESS_JWTNL</p>
+                <p class="title-bottom">Management System</p>
+            </div>
+            <div class="login-cont">
+                <img src="~/Images/login_img.png" class="login_bg">
+                <!-- 업체코드 없을때 -->
+                <div class="login-type" style="display:none">
+                    <div class="login_box">
+                        <div class="login_tit">
+                            <p>
+                                <strong>Member</strong>Login
+                            </p>
+                        </div>
+                        <div class="login_type">
+                            @*<label class="label" for="MEMBERTYPE">
+                                <span class="alignBox">
+                                    <input class="checkbox" type="radio" name="MEMBERTYPE" checked>
+                                    <span class="checkboximg"></span>
+                                    <span class="inputTxt">고객사</span>
+                                </span>
+                            </label>
+                            <label class="label" for="MEMBERTYPE">
+                                <span class="alignBox">
+                                    <input class="checkbox" type="radio" name="MEMBERTYPE">
+                                    <span class="checkboximg"></span>
+                                    <span class="inputTxt">직원</span>
+                                </span>
+                            </label>*@
+                        </div>
+                        <div class="login-input_box">
+                            <div class="login-input">
+                                <div class="login-int">
+                                    <div class="login_sort">
+                                        <span>회사코드</span>
+                                    </div>
+                                    <input type="text" />
+                                </div>
+                                <div class="login-int">
+                                    <div class="login_sort">
+                                        <span>사용자 ID</span>
+                                    </div>
+                                    <input type="text" />
+                                </div>
+                                <div class="login-int">
+                                    <div class="login_sort">
+                                        <span>비밀번호</span>
+                                    </div>
+                                    <input type="password" />
+                                </div>
+                            </div>
+                            <div class="chk">
+                                <div>
+                                    <span class="warn warn_id">*아이디를 입력하세요.</span>
+                                    <span class="warn warn_pw">*비밀번호를 입력하세요.</span>
+                                </div>
+                                <div>
+                                    @*<span class="check">
+                                        <input type="checkbox" id="login_keep" name="login_keep">
+                                        <label for="login_keep">Remember me</label>
+                                    </span>*@
+                                </div>
+                            </div>
+                            <a class="login-btn">
+                                로그인
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <!-- 업체코드 없을때 -->
+                <!-- 업체코드 있을때 -->
+                <div class="login-type" style="display:block">
+                    <div class="login_box">
+                        <div class="login_tit">
+                            <img src="~/Images/logo_img.png" alt="업체이미지" />
+                        </div>
+                        @*<div class="login_type">
+                            <label class="label" for="MEMBERTYPE">
+                                <span class="alignBox">
+                                    <input class="checkbox" type="radio" name="MEMBERTYPE" checked>
+                                    <span class="checkboximg"></span>
+                                    <span class="inputTxt">고객사</span>
+                                </span>
+                            </label>
+                            <label class="label" for="MEMBERTYPE">
+                                <span class="alignBox">
+                                    <input class="checkbox" type="radio" name="MEMBERTYPE">
+                                    <span class="checkboximg"></span>
+                                    <span class="inputTxt">직원</span>
+                                </span>
+                            </label>
+                        </div>*@
+                        <div class="login-input_box">
+                            <div class="login-input">
+                                @*<div class="login-int">*@
+                                @*<div class="login_sort select">
+            <select>
+                <option style="background: #489b95;">항공수입</option>
+                <option style="background: #489b95;">항공수출</option>
+                <option style="background: #489b95;">해운수입</option>
+                <option style="background: #489b95;">해운수출</option>
+            </select>
+        </div>*@
+                                @*<input type="text" placeholder="Input Tracking Number" />
+        <button type="button">조회</button>*@
+                                @*</div>*@
+                                <div class="login-int">
+                                    <input type="text" placeholder="사용자 ID" id="USR_ID" autocomplete="off"/>
+                                </div>
+                                <div class="login-int">
+                                    <input type="password" placeholder="비밀번호" id="USR_PWD" />
+                                </div>
+                            </div>
+                            <div class="chk">
+                                <div>
+                                    <span class="warn warn_id">*아이디를 입력하세요.</span>
+                                    <span class="warn warn_pw">*비밀번호를 입력하세요.</span>
+                                </div>
+                                <div>
+                                    <span class="check">
+                                        <input type="checkbox" id="company_login_keep" name="login_keep">
+                                        <label for="company_login_keep">Remember me</label>
+                                    </span>
+                                </div>
+                            </div>
+                            <a class="login-btn">
+                                로그인
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <!-- 업체코드 있을때 -->
+            </div>
+        </div>
+        @*<footer class="footer">
+            <p>Addr. 서울특별시 금천구 가산디지털2로 123, 313호 (가산동, 월드메르디앙 2차)  Tel. 1522-7422<br />
+            © 2024 Yangjae IT .  All Rights Reserved.</p>
+        </footer>*@
+    </div>
+    <!-- alert -->
+    <div class="layer_zone" id="alert01">
+        <div class="layer_wrap">
+            <div class="layer_inwrap">
+                <article class="layer_cont" style="max-width:300px;">
+                    <div class="alert_cont">
+                        <div class="inner">
+                            <div class="inner_cont">
+                                <img src="~/Images/icn_alert.png" />
+                                <p>개인통관부호 검증 중 입니다.</p>
+                            </div>
+                        </div>
+                        <div class="close_btn alert_btn">
+                            <button type="button" class="confirm2 close">확인</button>
+                        </div>
+                    </div>
+
+                </article>
+            </div>
+        </div>
+    </div>
+    <!-- alert -->
+</body>
+</html>
